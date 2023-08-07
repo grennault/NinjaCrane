@@ -1,7 +1,7 @@
 <!-- PROJECT TITLE -->
 <br />
 <div align="center">
-<h1 align="center">NinjaCrane : a Cybersecurity Attack Demonstrator on the polar crane's ICS</h1>
+<h1 align="center"> <i>NinjaCrane</i>  : a Cybersecurity Attack Demonstrator on a polar crane's Industrial Control System (ICS)</h1>
 </div>
 
 <!-- SHIELDS -->
@@ -28,8 +28,9 @@
   <ol>
     <h6><li><a href="#abstract">Abstract</a></li></h6>
     <h6><li><a href="#structure">Structure</a></li></h6>
+    <h6><li><a href="#how-to-start-">How to start ?</a></li></h6>
+    <h6><li><a href="#use--distribution">Use & Distribution</a></li></h6>
     <h6><li><a href="#contributor">Contributor</a></li></h6>
-    <h6><li><a href="#licence">License</a></li></h6>
   </ol>
 </h2>
 
@@ -37,7 +38,7 @@
 
 ## Abstract
 
-> Despite the sophisticated _Stuxnet_ attack discovered in 2010, the cybersecurity awareness around the _Industrial and Control System_ (ICS) is still low. The necessity to train ICS actors and raise awareness on this issue increase. Moreover, listing the best practices to follow regarding a security policy have a limited impact on their effectiveness compared to an awareness program. In this context, this Master’s Project builds a cyberattack demonstrator targeting a part of a nuclear power-plant ICS and more precisely the polar crane's _Distributed Control System_ (DCS). The described attack, called _NinjaCrane_, infects an engineering workstation through an USB cable and deploys a malware targeting the communication with a _Modicon M580_, a _Programmable Logic Controller_ (PLC), by conducting a _Meet-In-The-Middle Attack_ (MITM) exploiting the CVE-2021-22779 vulnerability (a.k.a. _ModiPwn_). This work illustrates and highlights the necessity to respect the ICS security policy and may well suiting an awareness program.
+> Despite the sophisticated _Stuxnet_ attack discovered in 2010, the cybersecurity awareness around the _Industrial and Control System_ (ICS) is still low. The necessity to train ICS actors and raise awareness on this issue increases. Moreover, listing the best practices to follow regarding a security policy has a limited impact on their effectiveness compared to an awareness program. In this context, this Master’s Project builds a cyberattack demonstrator targeting a part of a nuclear power-plant ICS and more precisely the polar crane's Control System. The described attack, called _NinjaCrane_, infects an engineering workstation through an USB cable or a maliciously modified mouse and deploys a malware targeting the communication with a _Modicon M580_, a _Programmable Logic Controller_ (PLC), by conducting a _Meet-In-The-Middle Attack_ (MITM) exploiting the CVE-2021-22779 vulnerability (a.k.a. _ModiPwn_). This work illustrates and highlights the necessity to respect the ICS security policy and may well suit an awareness program.
 
 <!-- REPOSITORY STRUCTURE -->
 
@@ -55,16 +56,34 @@
 >
 > - `LICENSE`: LICENSE folder containing the GNU Free Documentation License v1.3 and the GNU General Public License v3. All documents and scripts in this repo are respectively released under those Licenses.
 
+<!-- HOW TO START ? -->
+
+## How to start ?
+
+> - Read my MSc report at `\report\report.pdf`.
+> - Explore the `\Attacks` folder containing the attack vectors like the USB Ninja pro cable, the USB Ninja cable and the _NinjaCrane_ Meet-In-The-Middle malware targetting the connection between a Modicon M580 PLC and an engineering workstation.
+> - Explore the `\gui` folder containing a ~~beautiful~~ pythonic GUI controlling the USB Ninja cable or the USB Ninja pro. cable. This GUI allows to triggers the cables and deploy & controls the _NinjaCrane_ malware.
+
+<!-- USE & DISTRIBUTION -->
+
+## Use & Distribution
+
+### Licence
+
+> All my scripts are released under the GNU General Public License v3. See LICENCE folder to have the text of the GNU GPLv3.
+>
+> All my documents are released under the GNU Free Documentation License v1.3. See LICENCE folder to have the text of the GNU FDLv1.3.
+
+### Code of conduct
+
+> This work is provided AS IS without warranty of any kind. The author of this GitHub repository does not condone the use of this work for any illegal or malicious activities.
+
+### Responsible Disclosure
+
+> This work has been previously disclosed to Schnieder Electric and all presented vulnerabilities have already been identified.
+
 <!-- CONTRIBUTOR -->
 
 ## Contributor
 
 > [Gaiëtan Renault](mailto:gaietan.renault@alumni.epfl.ch)
-
-<!-- LICENCE -->
-
-## LICENCE
-
-> All my scripts are released under the GNU General Public License v3. See LICENCE folder to have the text of the GNU GPLv3.
->
-> All my documents are released under the GNU Free Documentation License v1.3. See LICENCE folder to have the text of the GNU FDLv1.3.
