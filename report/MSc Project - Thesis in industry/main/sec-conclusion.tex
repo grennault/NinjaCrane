@@ -1,0 +1,34 @@
+%%%%%%%%%%%%%%%%%%%%
+\chapter{Conclusion}
+% In the conclusion you repeat the main result and finalize the discussion of your project. Mention the core results and why as well as how your system advances the status quo.
+%%%%%%%%%%%%%%%%%%%%
+
+\section{Future Work}
+
+The major drawbacks of HID-based attacks, like the malicious mouse or cable, is the need to perform the attack while the workstation is on and session is unlocked — if windows account password is unknown to the attacker. This generally only happens when the workstation is in use. Moreover, as the attack emulates keystrokes, it is never completely stealth and a window flashes on the computer. The moment to trigger the HID payload plays a key role to conduct a stealth attack. It is generally triggered using a timer, over WiFi, or over BLE as in this study. In order to perform the HID-based attack while the session is locked — and windows account password is unknown — a maliciously modified keyboard spoofing the password (i.e., hardware key-logger) and then performing the HID-based attack can be considered. This can be done by modifying the electrical schematic from~\autoref{fig:infected-mouse-wiring} by replacing the mouse by a keyboard and adding a spliced GPIO-to-USB converter that transmits the sent keystrokes from keyboard to the Trinket M0. Alternatively, other USB attacks can be considered with stealth auto-run capability (e.g.,  LNK stuxnet/fanny USB flash drive exploit,  AutoRun exploits, Buffer overflow based attack etc.) and apparition of a fake lock-screen to spoof the windows password (see \emph{NinjaCrane github}~\cite{MyGithub}) for privilege escalation. 
+
+The malware performing the MITM attack is a heavy executable (around 11 Mo) due to the fact that it is a python converted script and can thus not be stored on a microcontroller Read Only Memory (ROM). To overcome this, the malware could be re-written in low level language with the help of \texttt{WinDivert}~\cite{windivert}. 
+
+Moreover, a third point to be improve is the need to run the malware with admin privilege. The malware can bypass UAC consent prompt but it requires that the current logged-in user has admin privilege. To relax this assumption, windows privilege escalation technique must be used like the \texttt{winPEAS} solution~\cite{winpeass} working on previous Windows versions. As an observation, the engineering workstation is rarely connected to the internet and the non updated workstation assumption might be added in the threat model.
+
+The polar crane testbed offers an ideal environment to study the UMAS protocol and to explore fuzzing techniques on the PLC like boofuzz or mutiny fuzz~\cite{Gao21}. Furthermore the \emph{NinjaCrane} attack is a first stage to explore the defense mechanisms to protect for example against USB attacks. The \emph{Microsoft Intune}~\cite{intune-servie} solution is not a silver bullet as it raises problems about maintaining the HID whitelist and it does not protect against all USB-based attacks. Other software-based solution could be integrated as the integrity system from Griscioli et al.~\cite{Griscioli16} making use of cryptographic primitives (but not preventing HID-based attack), the \emph{GoodUSB} or the \emph{USBFILTER} solution from Tian et al.~\cite{Tian15}~\cite{tian16} trying to protect the USB stack or to add a USB firewall respectively. 
+
+ 
+
+\section{Conclusion}
+
+This study developed a cybersecurity attack demonstrator called \emph{NinjaCrane} on the polar crane's ICS. The \emph{NinjaCrane} attack is the first cyberattack demonstrator in the literature targeting a specific nuclear equipment of a NPP — the polar crane. The polar crane is a handling equipment situated in the CB and used during nuclear unit shutdown to carry and move heavy loads. By targeting a non-simulated PLC controlling the polar crane, the \emph{NinjaCrane} offers a framework for an awareness program on OT cybersecurity with high realism level.
+
+The \emph{NinjaCrane} attack first infects the engineering workstation in the air-gap polar crane's ICS via the connection of a malicious USB device — a malicious mouse or a malicious USB Ninja cable — on this network. It then executes a persistent malware performing data exfiltration and lateral movement. Regarding data exfiltration, the malware running on the engineering workstation will send an email if it is connected to the internet with the control logic program and some PLC and workstation information. Regarding lateral movement, the malware performs a MITM attack to write arbitrary system bits in the PLC and take the control of the polar crane process. By taking control over the polar crane's ICS it is possible to create a significant safety event — a load stuck above the reactor pressure vessel.
+
+The \emph{NinjaCrane} attack highlights the importance to monitor the USB-capable devices brought by the supply chain in the information system and to respect the security policy. Moreover, it reveals the authentication weaknesses of the cryptographic scheme used by the UMAS protocol. This protocol used by Schneider Electric to program PLCs offers no encryption, no integrity and weak authentication.
+
+% Added by G. Renault
+\newpage
+%%%%%%%%%%%%%%%%%%%%
+\chapter*{Availability}
+\markboth{Availability}{Availability}
+\addcontentsline{toc}{chapter}{Availability}
+% Reference the material to my github
+%%%%%%%%%%%%%%%%%%%%
+All the material used for this Master thesis is available at \href{https://github.com/grennault/NinjaCrane}{\texttt{https://github.com/grennault/NinjaCrane}} and is released under GNU GPLv3 and GNU FDLv1.3.

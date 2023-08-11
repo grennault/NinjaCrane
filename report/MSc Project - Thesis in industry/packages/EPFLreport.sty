@@ -1,0 +1,261 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% EPFL report package
+% Goal: provide formatting for theses and project reports
+% Author: Mathias Payer <mathias.payer@epfl.ch>, Gaiëtan Renault <gaietan.renault@alumni.epfl.ch>
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\ProvidesPackage{packages/EPFLreport}
+\usepackage[absolute]{textpos}
+\usepackage{graphicx}
+\usepackage{verbatim}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage[tracking=true,kerning=true,spacing=true]{microtype}
+\microtypecontext{spacing=nonfrench}
+\usepackage[DIV=12,BCOR=2mm,headinclude=true,footinclude=false]{typearea}
+\usepackage[
+  backend=biber,
+  style=numeric-comp,
+  hyperref=true,
+  %style=numeric,
+  sorting=none,  % NOTE: Modified by G. Renault
+  defernumbers=true,
+  maxbibnames=99,
+]{biblatex}
+\addbibresource{tail/thesis.bib}
+\setcounter{biburllcpenalty}{7000}
+\setcounter{biburlucpenalty}{8000}
+\sloppy
+\usepackage{csquotes}
+\usepackage[french,german,english]{babel}
+\usepackage{fourier}
+\usepackage{rotating} % NOTE: Added by G. Renault
+\usepackage{appendix}  % NOTE: Added by G. Renault
+\def\fourierScale{s*[1.2]}
+\usepackage{setspace} % slightly larger spacing
+\setstretch{1.1}
+\usepackage{hyperref}
+
+\hypersetup{pdfborder={0 0 0}, colorlinks=true, linkcolor=black, citecolor=black, urlcolor=black}
+
+\newif\if@epflmscthesis
+\newif\if@epflbscthesis
+\newif\if@epflmscproject
+\newif\if@epflbscproject
+\DeclareOption{MScThesis}{\@epflmscthesistrue}
+\DeclareOption{BScThesis}{\@epflbscthesistrue}
+\DeclareOption{MScProject}{\@epflmscprojecttrue}
+\DeclareOption{BScProject}{\@epflbscprojecttrue}
+
+\newif\if@lablogo
+\DeclareOption{lablogo}{\@lablogotrue}
+
+\ProcessOptions\relax
+
+\newcommand{\projectterm}{Project Report}
+\if@epflmscthesis
+  \renewcommand{\projectterm}{Master Thesis}
+\fi
+\if@epflbscthesis
+  \renewcommand{\projectterm}{Bachelor Thesis}
+\fi
+\if@epflmscproject
+  \renewcommand{\projectterm}{Master Project Report}
+\fi
+\if@epflbscproject
+  \renewcommand{\projectterm}{Bachelor Project Report}
+\fi
+
+\def\@adviser{Thesis Advisor}
+\newcommand{\adviser}[1]{
+  \def\@adviser{#1}
+}
+
+\def\@supervisor{Thesis Supervisor}
+\newcommand{\supervisor}[1]{
+  \def\@supervisor{#1}
+}
+
+\def\@expert{Expert Reviewer}
+\newcommand{\expert}[1]{
+  \def\@expert{#1}
+}
+
+\def\maketitle{\par
+ \begingroup
+   \renewcommand\thefootnote{\fnsymbol{footnote}}%
+   \def\@makefnmark{\hbox to\z@{$\m@th^{\@thefnmark}$\hss}}%
+    \long\def\@makefntext##1{\parindent 1em\noindent
+            \hbox to1.8em{\hss$\m@th^{\@thefnmark}$}##1}%
+   \if@twocolumn
+     \twocolumn[\@maketitle]%
+     \else \newpage
+     \global\@topnum\z@
+     \@maketitle \fi\@thanks
+ \endgroup
+ \setcounter{footnote}{0}%
+ \let\maketitle\relax
+ \let\@maketitle\relax
+ \let\thanks\relax}
+
+\def\@maketitle{
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\newlength{\drop}
+\newlength{\tpheight}\setlength{\tpheight}{0.9\textheight}
+\newlength{\txtheight}\setlength{\txtheight}{0.9\tpheight}
+\begingroup
+\thispagestyle{empty}
+\drop=0.1\txtheight
+\begin{textblock*}{4in}[0.3066,0.39](1.5in,0.85in)
+    \includegraphics[width=2.5in]{logo/EPFLlogo.pdf}
+\end{textblock*}
+\if@lablogo
+\begin{textblock*}{4in}[0.3066,0.39](5.7in,0.85in)
+    \includegraphics[width=3in]{logo/LABlogo}
+\end{textblock*}
+\fi
+\vspace*{\drop}
+\centering 
+{\LARGE École Polytechnique Fédérale de Lausanne}\\[2\baselineskip]
+{\LARGE\sffamily \@title}\\[2\baselineskip]
+by \@author\par
+\vfill
+{\LARGE \projectterm}\par
+\vspace{\drop}
+
+\flushleft
+{Approved by the Examining Committee:}\par
+\vspace{1.5\baselineskip}
+\@adviser\\
+Thesis Advisor \\[1\baselineskip]
+\@expert\\
+External Expert \\[1\baselineskip]
+\@supervisor\\
+Thesis Supervisor\par
+\centering
+\vspace{1\baselineskip}
+EPFL IC IINFCOM HEXHIVE \\
+BC 160 (Bâtiment BC) \\
+Station 14 \\
+CH-1015 Lausanne \\[\baselineskip]
+\today
+\par
+\vfill
+\endgroup
+}
+
+\def\@dedication{%
+\begin{raggedleft}
+    At the end of the day, the goals are simple: safety and security.\\
+    --- \emph{Jodi Rell}\\
+\end{raggedleft}
+\vspace{4cm}
+\begin{center}
+    %Dedicated to my pet bunny.
+\end{center}
+}
+\newcommand{\dedication}[1]{
+  \def\@dedication{#1}
+}
+
+\def\makededication{\par
+% Dedication and acknowledgments
+\cleardoublepage
+\thispagestyle{empty}
+\vspace*{3cm}
+\@dedication
+\setcounter{page}{0}
+}
+
+% NOTE: Modified by G. Renault
+\def\@acknowledgments{%
+I would like to express my gratitude to my company supervisor, \emph{Nicolas Sursin}, for all his guidance throughout my journey at \textit{Électricité de France} (EDF). His dedication to my professional growth has been evident in the effort he has invested in my training and development. \emph{Nicolas Sursin} has been a great supervisor, always available to answer my questions and provide feedback and ideas for my project. 
+
+I would show deep gratitude to my manager, \emph{Jérôme-Alexandre}. Through all his anecdotes, his valuable advice and his enlightened vision on the industry domain, he allowed me to grasp and brush up on the complexity of the nuclear industry, on the safety priority, and on the importance to understand automation.
+
+I would like to take a moment to express my acknowledgments to the cybersecurity expert \emph{Ludovic} for his precious time and constructive criticism and who has always been around while I was eating a (cyber-)pizza. 
+
+Moreover, I would grateful all \textit{Contrôle-Commande} team members; \emph{Karim} for his kindness and availability to answer all my questions on the nuclear domain, \emph{Nicolas} for his jokes and endlessly joy to help me, \emph{Romain} for his help on trigrams and irradiation, \emph{Océane} for her sociability and energy despite a lower availability, \emph{Baptise}, a disruptive big bear full of good ideas, for his expertise on automation, handling system, and his D.I.Y. side, \emph{Aude} a kind docking stations killer, \emph{Arnaud} for his expertise on the qualification process, \emph{Paul} for bringing some youth and energy to the team, \emph{Evelina} for her spontaneity, \emph{Jean-Paul} for his unbelievable stories and expertise on the industrial standards, \emph{Laurent} for his investment despite his professional travels, \emph{Thierry} for his teasing and outspoken nature, \emph{Louis} for his sense of humor, and \emph{Thibaud} for his amazing work on the polar crane. To all, thank you for your welcoming, for all the good moments we have shared, for your kindness, and for your help in the company.
+
+Despite his very busy schedule, I would like to express my great respect to Prof. \emph{Payer}, my academical supervisor, for providing me with invaluable and concise advice remotely that greatly enhanced my works.
+
+Finally, I would like to thank my love, \emph{Camille}, for her support, her joy, and her energy that she managed to transmit to me beyond the Swiss border. I address my last words to my family, who supported me with all their love every weekend when coming home, and my sister who made me laugh remotely so much with her adventures.
+
+\iffalse
+This is where you thank those who supported you on this journey. Good examples
+are your significant other, family, advisers, and other parties that inspired
+you during this project. Generally this section is about 1/2 page to a page.
+
+Consider acknowledging the use and location of this thesis package.
+
+Define your acknowledgments in \texttt{\textbackslash{}acknowledgments\{...\}}
+and show them with \texttt{\textbackslash{}makeacks}.
+\fi
+}
+\newcommand{\acknowledgments}[1]{
+  \def\@acknowledgments{#1}
+}
+
+% Acknowledgments
+\def\makeacks{\par
+\cleardoublepage
+\chapter*{Acknowledgments}
+\markboth{Acknowledgments}{Acknowledgments}
+\addcontentsline{toc}{chapter}{Acknowledgments}
+
+\@acknowledgments
+
+\bigskip
+ 
+\noindent\textit{Lyon, \today}
+\hfill \@author
+}
+
+% abstract
+\def\abstract{\cleardoublepage
+\chapter*{Abstract}
+\markboth{Abstract}{Abstract}
+\addcontentsline{toc}{chapter}{Abstract \& Résumé}}
+\def\endabstract{}
+
+% frenchabstract
+\def\frenchabstract{\begin{otherlanguage}{french}
+\cleardoublepage
+\chapter*{Résumé}
+\markboth{Résumé}{Résumé}}
+\def\endfrenchabstract{\end{otherlanguage}}
+
+% Chapter with no header. Added by G. Renault
+\newcommand{\unchapter}[1]{%
+  \begingroup
+  \let\@makeschapterhead\@gobble % make \@makechapterhead do nothing
+  \chapter*{#1}
+  \addcontentsline{toc}{chapter}{#1}
+  \markboth{#1}{#1}
+  \endgroup
+}
+
+% Notation Chapter. Added by G. Renault
+\def\notation{
+\unchapter{Acronyms \& Notation}
+% \markboth{Acronyms \& Notation}{Acronyms \& Notation}
+% \addcontentsline{toc}{chapter}{Acronyms \& Notation}
+}\def\endnotation{}
+
+% Tables
+\def\maketoc{
+\cleardoublepage
+\pdfbookmark{\contentsname}{toc}
+\tableofcontents
+\setlength{\parskip}{1em}
+}
+
+\endinput

@@ -28,7 +28,8 @@ import asyncio
 from bleak import BleakScanner, BleakClient, exc
 import ctypes
 import platform
-# import bluetooth # Uncomment to use python package to activate Bluetooth (see activate_bluetooth() function)
+
+# import bluetooth # NOTE: Uncomment to use python package to activate Bluetooth (see activate_bluetooth() function)
 import types
 import multiprocessing
 import bluetooth_send
@@ -36,22 +37,28 @@ import time
 
 # Print the available font (OS-dependent) : sg.Text.fonts_installed_list()
 
-BLE_address_DEFAULT = "CE:31:66:D0:67:EC"  # USB Ninja cable BLE Address
-# USB Ninja cable professional BLE Address
-BLE_address_pro_DEFAULT = "F0:9E:C6:56:04:90"
-BLE_address = BLE_address_pro_DEFAULT  # Pro by default
-# Password is '5972' for USB Ninja cable
-password_DEFAULT = b'\x35\x39\x37\x32'
-# Password is '8888' for USB Ninja professional cable
-password_pro_DEFAULT = "8888"
-password = password_pro_DEFAULT  # Pro by default
-console_msg = ""                   # Console message to print
-laser_pointer_cursor = False       # Cursor pointer
+BLE_address_DEFAULT = "CE:31:66:D0:67:EC"  # USB Ninja cable BLE Address. NOTE: Needs to be updated with the correct USB Ninja cable BLE Address you have (see \Attacks\BLE_attack folder in github to learn how to find it).
+BLE_address_pro_DEFAULT = "F0:9E:C6:56:04:90"  # USB Ninja cable professional BLE Address # NOTE: Needs to be updated with the correct USB Ninja cable professional BLE Address you have (see \Attacks\BLE_attack folder in github to learn how to find it).
+BLE_address = BLE_address_pro_DEFAULT  # NOTE: USB Ninja cable pro by default
+password_DEFAULT = b"\x35\x39\x37\x32"  # Password is '5972' for USB Ninja cable # NOTE: Needs to be updated with the correct USB Ninja cable password set (see \Attacks\USBNinja_payload\Setup_archive folder in github to learn how to set this password).
+password_pro_DEFAULT = "8888"  # Password is '8888' for USB Ninja professional cable # NOTE: Needs to be updated with the correct USB Ninja cable professional password set (see \Attacks\USBNinja_payload\Setup_archive folder in github to learn how to set this password).
+password = password_pro_DEFAULT  # NOTE: USB Ninja cable pro by default
+console_msg = ""  # Console message to print
+laser_pointer_cursor = False  # Cursor pointer
 # USB Ninja cable ("USB Ninja cable") or USB Ninja cable pro. ("USB Ninja cable pro.")
-cable_DEFAULT = "USB Ninja cable pro."  # Pro by default
+cable_DEFAULT = "USB Ninja cable pro."  # NOTE: USB Ninja cable pro by default
 
 
-def open_window(connection_state=True, state_success=False, text_color="red", win_title="Warning", message="", font_size="12", win_size=(600, 100), msg2=""):
+def open_window(
+    connection_state=True,
+    state_success=False,
+    text_color="red",
+    win_title="Warning",
+    message="",
+    font_size="12",
+    win_size=(600, 100),
+    msg2="",
+):
     if connection_state and not state_success:
         msg = " Connection with cable failed,\nplease try again"
     elif connection_state and state_success:
@@ -59,12 +66,34 @@ def open_window(connection_state=True, state_success=False, text_color="red", wi
     else:
         msg = message
     layout = [
-        [sg.Text(msg, font=("Arial", font_size), justification="center", text_color=text_color)]]
+        [
+            sg.Text(
+                msg,
+                font=("Arial", font_size),
+                justification="center",
+                text_color=text_color,
+            )
+        ]
+    ]
     if msg2 != "":
-        layout += [[sg.Text(msg2, font=("Arial", font_size),
-                            justification="left", text_color=text_color)]]
-    window = sg.Window(win_title, layout, modal=True, size=win_size,
-                       icon=path + "\\img\\icon.ico", element_justification="center")
+        layout += [
+            [
+                sg.Text(
+                    msg2,
+                    font=("Arial", font_size),
+                    justification="left",
+                    text_color=text_color,
+                )
+            ]
+        ]
+    window = sg.Window(
+        win_title,
+        layout,
+        modal=True,
+        size=win_size,
+        icon=path + "\\img\\icon.ico",
+        element_justification="center",
+    )
     choice = None
     while True:
         event, values = window.read()
@@ -75,11 +104,13 @@ def open_window(connection_state=True, state_success=False, text_color="red", wi
 
 
 def activate_bluetooth():
-    """Activates bluettoth using bluetooth (pybluez) package
-    """
+    """Activates bluettoth using bluetooth (pybluez) package"""
     # print(bluetooth.read_local_bdaddr()) # Uncomment to activate bluetooth with python package
     # OR (for windows only)
-    os.system("powershell \"[CmdletBinding()] Param () If ((Get-Service bthserv).Status -eq 'Stopped') {Start-Service bthserv} Add-Type -AssemblyName System.Runtime.WindowsRuntime;$asTaskGeneric=([System.WindowsRuntimeSystemExtensions].GetMethods()|?{$_.Name -eq 'AsTask' -and $_.GetParameters().Count -eq 1 -and $_.GetParameters()[0].ParameterType.Name -eq 'IAsyncOperation`1' })[0];Function Await($WinRtTask,$ResultType) {$asTask = $asTaskGeneric.MakeGenericMethod($ResultType);$netTask=$asTask.Invoke($null,@($WinRtTask));$netTask.Wait(-1) | Out-Null;$netTask.Result};[Windows.Devices.Radios.Radio,Windows.System.Devices,ContentType=WindowsRuntime] | Out-Null;[Windows.Devices.Radios.RadioAccessStatus,Windows.System.Devices,ContentType=WindowsRuntime] | Out-Null;Await ([Windows.Devices.Radios.Radio]::RequestAccessAsync()) ([Windows.Devices.Radios.RadioAccessStatus]) | Out-Null;$radios=Await ([Windows.Devices.Radios.Radio]::GetRadiosAsync()) ([System.Collections.Generic.IReadOnlyList[Windows.Devices.Radios.Radio]]);$bluetooth = $radios | ? {$_.Kind -eq 'Bluetooth'};[Windows.Devices.Radios.RadioState,Windows.System.Devices,ContentType=WindowsRuntime] | Out-Null;Await ($bluetooth.SetStateAsync('On')) ([Windows.Devices.Radios.RadioAccessStatus]) | Out-Null\"")
+    os.system(
+        "powershell \"[CmdletBinding()] Param () If ((Get-Service bthserv).Status -eq 'Stopped') {Start-Service bthserv} Add-Type -AssemblyName System.Runtime.WindowsRuntime;$asTaskGeneric=([System.WindowsRuntimeSystemExtensions].GetMethods()|?{$_.Name -eq 'AsTask' -and $_.GetParameters().Count -eq 1 -and $_.GetParameters()[0].ParameterType.Name -eq 'IAsyncOperation`1' })[0];Function Await($WinRtTask,$ResultType) {$asTask = $asTaskGeneric.MakeGenericMethod($ResultType);$netTask=$asTask.Invoke($null,@($WinRtTask));$netTask.Wait(-1) | Out-Null;$netTask.Result};[Windows.Devices.Radios.Radio,Windows.System.Devices,ContentType=WindowsRuntime] | Out-Null;[Windows.Devices.Radios.RadioAccessStatus,Windows.System.Devices,ContentType=WindowsRuntime] | Out-Null;Await ([Windows.Devices.Radios.Radio]::RequestAccessAsync()) ([Windows.Devices.Radios.RadioAccessStatus]) | Out-Null;$radios=Await ([Windows.Devices.Radios.Radio]::GetRadiosAsync()) ([System.Collections.Generic.IReadOnlyList[Windows.Devices.Radios.Radio]]);$bluetooth = $radios | ? {$_.Kind -eq 'Bluetooth'};[Windows.Devices.Radios.RadioState,Windows.System.Devices,ContentType=WindowsRuntime] | Out-Null;Await ($bluetooth.SetStateAsync('On')) ([Windows.Devices.Radios.RadioAccessStatus]) | Out-Null\""
+    )
+
 
 # For resolution compatibility
 
@@ -97,7 +128,7 @@ make_dpi_aware()
 def _draw_img_from_name(img_name, zoom_size, location, crop=None):
     image_data = imread(path + "/img/" + img_name)
     if crop is not None:
-        image_data = image_data[crop[0]: -crop[0], crop[1]: -crop[1]]
+        image_data = image_data[crop[0] : -crop[0], crop[1] : -crop[1]]
     image_data = cv2.resize(image_data, zoom_size)
     buffered = BytesIO()
     Image.fromarray(image_data).save(buffered, format="PNG", compress_level=0)
@@ -109,8 +140,7 @@ def _draw_img_from_name(img_name, zoom_size, location, crop=None):
 # Convert np array image to Tkinter Image
 def _photo_image(image: np.ndarray):
     height, width = image.shape
-    data = f"P5 {width} {height} 255 ".encode(
-    ) + image.astype(np.uint8).tobytes()
+    data = f"P5 {width} {height} 255 ".encode() + image.astype(np.uint8).tobytes()
     return ImageTk.PhotoImage(width=width, height=height, data=data, format="PPM")
 
 
@@ -175,22 +205,22 @@ def _draw_on_graph():
     )
 
     # Link between engineering station and M580
-    window["-GRAPH-"].draw_line((600, 440), (600, 490),
-                                color="black", width=10)
+    window["-GRAPH-"].draw_line((600, 440), (600, 490), color="black", width=10)
     # Link between M580 and HMI
-    window["-GRAPH-"].draw_line((720, 600), (800, 600),
-                                color="black", width=10)
+    window["-GRAPH-"].draw_line((720, 600), (800, 600), color="black", width=10)
     # Link between M580 and ESP32
-    window["-GRAPH-"].draw_line((690, 510), (1080, 310),
-                                color="black", width=10)
-    window["-GRAPH-"].draw_line((140, 550), (200, 550),
-                                color="black", width=10)  # Legend serial
+    window["-GRAPH-"].draw_line((690, 510), (1080, 310), color="black", width=10)
+    window["-GRAPH-"].draw_line(
+        (140, 550), (200, 550), color="black", width=10
+    )  # Legend serial
 
-    _draw_dash_line((140, 210), (470, 210), 8, "blue",
-                    10)  # Link between hacker and cable
-    _draw_dash_line((1280, 260), (1375, 210), 8, "blue",
-                    4)  # Link between ESP32 and Hub
-    _draw_dash_line((140, 600), (200, 600), 8, "blue", 4)   # Legend BLE
+    _draw_dash_line(
+        (140, 210), (470, 210), 8, "blue", 10
+    )  # Link between hacker and cable
+    _draw_dash_line(
+        (1280, 260), (1375, 210), 8, "blue", 4
+    )  # Link between ESP32 and Hub
+    _draw_dash_line((140, 600), (200, 600), 8, "blue", 4)  # Legend BLE
 
 
 # Absolute path of this file
@@ -232,34 +262,71 @@ if __name__ == "__main__":
     ]
 
     layout = [
-        [sg.Text(" Say hello to HiJack! This graphical user interface models an attack on a Polar Crane's ICS.\n"),
-         sg.Push(),
-         sg.Column([
-             [sg.Combo(["USB Ninja cable", "USB Ninja cable pro."], key="-KEY-cable", default_value=cable_DEFAULT, button_background_color="white", button_arrow_color="black", pad=(10, 0), enable_events=True, readonly=True),
-              sg.Button("?", key="-KEY-info-cable",
-                        button_color="black", auto_size_button=False, size=(2, 1), font=("", 7))
-              ],
-             [sg.Text(" ", visible=True, key="-KEY-is-payload"),
-                 sg.Input("", size=(11, None),
-                          visible=False, key="-KEY-payload"),
-                 sg.Button("?", key="-KEY-info-payload",
-                           button_color="black", auto_size_button=False, size=(2, 1), font=("", 7), visible=False, pad=((20, 0), (0, 0)))]
-         ])
-         ],
+        [
+            sg.Text(
+                " Say hello to HiJack! This graphical user interface models an attack on a Polar Crane's ICS.\n"
+            ),
+            sg.Push(),
+            sg.Column(
+                [
+                    [
+                        sg.Combo(
+                            ["USB Ninja cable", "USB Ninja cable pro."],
+                            key="-KEY-cable",
+                            default_value=cable_DEFAULT,
+                            button_background_color="white",
+                            button_arrow_color="black",
+                            pad=(10, 0),
+                            enable_events=True,
+                            readonly=True,
+                        ),
+                        sg.Button(
+                            "?",
+                            key="-KEY-info-cable",
+                            button_color="black",
+                            auto_size_button=False,
+                            size=(2, 1),
+                            font=("", 7),
+                        ),
+                    ],
+                    [
+                        sg.Text(" ", visible=True, key="-KEY-is-payload"),
+                        sg.Input(
+                            "", size=(11, None), visible=False, key="-KEY-payload"
+                        ),
+                        sg.Button(
+                            "?",
+                            key="-KEY-info-payload",
+                            button_color="black",
+                            auto_size_button=False,
+                            size=(2, 1),
+                            font=("", 7),
+                            visible=False,
+                            pad=((20, 0), (0, 0)),
+                        ),
+                    ],
+                ]
+            ),
+        ],
         [sg.Column(img_to_print)],
         [
             sg.Push(),
-            sg.Button("Deploy Malware.",
-                      key="Bluetooth_connection_A", button_color="black"),
-            sg.Button("Trigger Attack A.",
-                      key="Bluetooth_connection_B", button_color="black"),
-            sg.Button("Trigger Custom Payload.",
-                      key="Bluetooth_connection_C", button_color="black", disabled=True, tooltip="Please select 'USB Ninja cable pro.' to activate custom payload"),
-            sg.Push()
+            sg.Button(
+                "Deploy Malware.", key="Bluetooth_connection_A", button_color="black"
+            ),
+            sg.Button(
+                "Trigger Attack A.", key="Bluetooth_connection_B", button_color="black"
+            ),
+            sg.Button(
+                "Trigger Custom Payload.",
+                key="Bluetooth_connection_C",
+                button_color="black",
+                disabled=True,
+                tooltip="Please select 'USB Ninja cable pro.' to activate custom payload",
+            ),
+            sg.Push(),
         ],
-        [
-            sg.Text("")
-        ],
+        [sg.Text("")],
         [
             sg.Frame(
                 " Console ",
@@ -271,13 +338,21 @@ if __name__ == "__main__":
             )
         ],
         [
-            sg.Text("Made by Gaiëtan Renault", expand_x=True,
-                    justification='center', tooltip="gaietan.renault@epfl.alumni.ch"),
+            sg.Text(
+                "Made by Gaiëtan Renault",
+                expand_x=True,
+                justification="center",
+                tooltip="gaietan.renault@epfl.alumni.ch",
+            ),
         ],
     ]
 
     window = sg.Window(
-        "HiJack!", layout, size=(1800, 1000), icon=path + "\\img\\icon.ico", resizable=True
+        "HiJack!",
+        layout,
+        size=(1800, 1000),
+        icon=path + "\\img\\icon.ico",
+        resizable=True,
     ).Finalize()
     window.Maximize()
 
@@ -322,12 +397,25 @@ if __name__ == "__main__":
             window["-KEY-console-msg-"].update(f"\n\n")
 
         elif event == "-KEY-info-cable":
-            open_window(connection_state=False, text_color="white", win_title="Info",
-                        message="Please select the type of cable used for\nthe workstation infection")
+            open_window(
+                connection_state=False,
+                text_color="white",
+                win_title="Info",
+                message="Please select the type of cable used for\nthe workstation infection",
+            )
 
         elif event == "-KEY-info-payload":
-            open_window(connection_state=False, text_color="white", win_title="Info",
-                        message="Please type what to write in trigger.txt file (see malware.pyw).\n", msg2="- 'init_A': prevents the PLC to start by replacing start payload by a keep alive payload\n- 'A': stops the PLC by replacing keep alive payload by stop PLC payload\n- 'B': sets rotation speed to DEFAULT_SPEED_B\n- 'B XX': sets rotation speed to XX. Where XX in {1, ..., 99}\n- 'C \\xXX\\xXX...\\xXX': sends the packet with modbus data equal to '\\xXX\\xXX...\\xXX'\n" + " "*32 + "where X is in {0, ..., F} \n- 'reset': resets attack and set it to a waiting state\n\n Then push the 'Trigger Custom Payload' button", font_size=10, win_size=(800, 300))
+            open_window(
+                connection_state=False,
+                text_color="white",
+                win_title="Info",
+                message="Please type what to write in trigger.txt file (see malware.pyw).\n",
+                msg2="- 'init_A': prevents the PLC to start by replacing start payload by a keep alive payload\n- 'A': stops the PLC by replacing keep alive payload by stop PLC payload\n- 'B': sets rotation speed to DEFAULT_SPEED_B\n- 'B XX': sets rotation speed to XX. Where XX in {1, ..., 99}\n- 'C \\xXX\\xXX...\\xXX': sends the packet with modbus data equal to '\\xXX\\xXX...\\xXX'\n"
+                + " " * 32
+                + "where X is in {0, ..., F} \n- 'reset': resets attack and set it to a waiting state\n\n Then push the 'Trigger Custom Payload' button",
+                font_size=10,
+                win_size=(800, 300),
+            )
 
         elif "Bluetooth_connection" in event:
             window["-KEY-console-msg-"].update(f"Activating bluetooth...\n")
@@ -342,7 +430,8 @@ if __name__ == "__main__":
             time.sleep(0.5)
 
             window["-KEY-console-msg-"].update(
-                f"Activating bluetooth. Done.\nEstablishing connection with the antenna...")
+                f"Activating bluetooth. Done.\nEstablishing connection with the antenna..."
+            )
             window.read(timeout=10)
             manager = multiprocessing.Manager()
             return_dict = manager.dict()
@@ -350,17 +439,25 @@ if __name__ == "__main__":
 
             payload = event[-1]
             if values["-KEY-cable"] == "USB Ninja cable pro.":
-                if payload == 'A':
+                if payload == "A":
                     payload = "init"
                     msg = "Malware is now running on engineering worksation"
-                elif payload == 'B':
+                elif payload == "B":
                     msg = "Attacking industrial process"
-                elif payload == 'C':
+                elif payload == "C":
                     payload = window["-KEY-payload"].get()
                     msg = "Sending the custom payload"
 
-            process1 = multiprocessing.Process(target=bluetooth_send.deamon, args=(
-                BLE_address, password, payload, return_dict, values["-KEY-cable"]))
+            process1 = multiprocessing.Process(
+                target=bluetooth_send.deamon,
+                args=(
+                    BLE_address,
+                    password,
+                    payload,
+                    return_dict,
+                    values["-KEY-cable"],
+                ),
+            )
             process1.start()
             window.read(timeout=10)
             process1.join()
@@ -370,21 +467,25 @@ if __name__ == "__main__":
                 window["-KEY-console-msg-"].update(console_msg)
 
                 _draw_dash_line((140, 210), (470, 210), 8, "red", 10)
-                window["-GRAPH-"].draw_line((600, 440), (600, 490),
-                                            color="red", width=10)
+                window["-GRAPH-"].draw_line(
+                    (600, 440), (600, 490), color="red", width=10
+                )
                 window["-GRAPH-"].draw_text(
-                    "Engineering Station", (600, 420), font=("Helvetica", 10), color="black"
+                    "Engineering Station",
+                    (600, 420),
+                    font=("Helvetica", 10),
+                    color="black",
                 )
                 if payload == "B":
-                    window["-GRAPH-"].draw_line((690, 510),
-                                                (1080, 310), color="red", width=10)
+                    window["-GRAPH-"].draw_line(
+                        (690, 510), (1080, 310), color="red", width=10
+                    )
                     _draw_dash_line((1280, 260), (1375, 210), 8, "red", 4)
             else:
                 console_msg += f"Establishing connection with the antenna... Failed :'("
                 window["-KEY-console-msg-"].update(console_msg)
 
             window.read(timeout=10)
-            open_window(connection_state=True,
-                        state_success=return_dict.values()[0])
+            open_window(connection_state=True, state_success=return_dict.values()[0])
 
     window.close()

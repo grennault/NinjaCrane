@@ -1,0 +1,99 @@
+%%%%%%%%%%%%%%%%
+\chapter{Testbed Overview}
+% TODO
+%%%%%%%%%%%%%%%%
+
+This chapter describes the testbed of the \emph{NinjaCrane} attack. This testbed is used in the Evaluation \Cref{chapter:evaluation} to test the attack.  
+
+\section{The Polar Crane as a Physical Process}
+
+For illustration purpose the attack is performed on a sketch in LEGO\texttrademark\ of the polar crane. This sketch has been made by B. Allard and T. Cassas with the first goal being to introduce a practical control system and to create a training on software and equipment qualification. 
+
+\subsection{Description}
+
+The sketch of the polar crane can be found in~\autoref{fig:polar-crane}. This sketch made in LEGO\texttrademark\ is not to scale. The polar crane is composed of three BLE Hubs controlling the crane's rotation, trolley's shift, and charge lift-up. The cyberattack will target the crane's rotation in order to stop it.   
+
+\subsection{Components}
+
+Here is the list of the sketch components (sensors and actuators):
+
+\begin{itemize}
+    \item 3 $\times$ LEGO\texttrademark\ Powered Up Technic Hub (88012)
+    \item 3 $\times$ LEGO\texttrademark\ Powered Up (88007) Color \& Distance Sensor (e.g., computes the angular position of the polar crane to initialize it)
+    \item 1 $\times$ LEGO\texttrademark\ Powered Up Technic XL Motor (88014), used for charge lift-up.
+    \item 1 $\times$ LEGO\texttrademark\ Powered Up Technic Large Motor (88013), used for trolley shift.
+    \item 4 $\times$ LEGO\texttrademark\ Powered Up (88011) Train Motor, used for polar crane rotation.
+\end{itemize}
+
+\section{Electrical Cabinet}
+
+This section presents the physical Electrical Cabinet used in the testbed. The cabinet contains the PLC and the HMI and can be considered as representative as it has been qualified following the \href{https://www.afcen.com/en/rcc-e/187-rcc-e.html}{AFCEN RCC-E} nuclear standard (i.e., the electrical cabinet used in this testbed could be placed in a NPP site). 
+
+\subsection{Description}
+
+The PLC M580 is connected to the ESP32 via the MAX232 converter (RS232 to TTL serial respectively). The ESP32 is communicating over \emph{Bluetooth Low Energy} (BLE) to the Bluetooth Hubs of the polar crane. This part is not representative of reality but the success of \emph{NinjaCrane} cyberattack is independent from this choice.
+
+\subsection{Main Components}
+
+\begin{itemize}
+    \item 1 $\times$ HMI: Magelis HMIIG3U
+    \item 1 $\times$ CPU: Modicon M580 (BMEXBP582040), firmware v2.70 (07/2018)
+    \item 1 $\times$ Rack: Modicon X80, 12 slots, Ethernet backplane (BMEXBP1200)
+    \item 1 $\times$ Fiber converter module: Modicon X80, single mode (BMXNRP0201)
+    \item Diverses I/O modules used for buttons and lights — not itemized here
+    \item 1 $\times$ ESP 32-WROOM-32
+    \item 1 $\times$ Maxim Integrated Products MAX232 IC
+\end{itemize}
+
+
+\section{Engineering Workstation}
+
+\subsection{Description}
+
+The engineering workstation is connected to the PLC via an Ethernet connection. The protocol used to program and communicate is Modbus/UMAS over TCP/IP. This connection can be considered as representative of reality. However, the engineering workstation is assumed to be connected to the internet at some point for malware download (if the USB Ninja cable is being used) and data leakage during the cyberattack. This could for example happen if the automation operator connects the workstation to download a driver or update a system. Unity Pro is the software that modifies, compiles and uploads the program on the PLC. The program is stored in a .STU file.
+
+\subsection{Characteristics}
+
+The engineering workstation is a desktop computer with the following characteristics:
+
+\begin{itemize}
+    \item Operating System: Windows 10 Professional 22H2 (build 19045.2604)
+    \item Antivirus: Avast Antivirus Free (Version 23.3.8047.782)
+    \item WiFi Adapter: WiFi Adapter RoHS NBS WFLD01
+    \item Software:
+    \begin{itemize}
+        \item Unity Pro XL V13.1 - 180823C (Schneider Electric Industries SA). Documentation of Unity Pro v13.1 software \cite{docUnityPro}.
+    \end{itemize}
+    \item Admin user account
+\end{itemize}
+
+\section{Adversary's Tools}
+
+\subsection{Laptop}
+
+\begin{itemize}
+    \item Operating System: Windows 11 Professional 22H2 (build 22621.1702)
+    \item Software:
+    \begin{itemize}
+        \item Python 3.11.1
+        \item nRF Connect 4.1.2
+        \item Wireshark 4.0.6
+    \end{itemize}
+    \item Admin user account
+    \item Bluetooth Sniffer Dongle : Nordic Semiconductor nRF 52840
+\end{itemize}
+
+\subsection{USB Ninja Cable}
+
+USB Ninja cable from Lab401 can be configured with the  \href{https://github.com/4d4c/USBNinja}{\emph{USBNinja github}}. The USB Ninja cable is a regular USB cable that can be triggered via a wireless remote controller to execute a pre-compiled payload. The payload is uploaded via the Arduino IDE. 
+
+\subsection{Malicious Mouse}
+
+The malicious mouse is made of a regular mouse in which were added a USB hub to multiplex the serial connection to add a microcontroller. The microcontroller then act as a HID-capable device and execute a pre-compiled payload.
+
+The electric schematic can be found in~\autoref{fig:infected-mouse-wiring}. The design of the maliciously modified mouse offers flexibility as any microcontroller with micro USB type B connector can be inserted in the mouse. The \emph{Adafruit Trinket M0} is the microcontroller used in this MSc thesis.  
+
+\section{Network Architecture}
+
+The overall network architecture of the testbed is described in details in~\autoref{fig:setup}. The engineering workstation, connected in Ethernet to the PLC, uploads the program. The engineering workstation programs the HMI with the \emph{Vijeo} software by temporarily connecting in serial to the HMI. The HMI and the PLC are connected in Ethernet allowing the PLC to send the variables state to the HMI and the HMI to send command orders to the PLC. The PLC program relays those orders to the ESP32 that interprets them and activates the corresponding BLE Hubs to control the polar crane. 
+

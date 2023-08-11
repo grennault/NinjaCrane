@@ -1,0 +1,57 @@
+%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Introduction}
+% This section is usually 3-5 pages.
+%%%%%%%%%%%%%%%%%%%%%%
+
+% The introduction is a longer writeup that gently eases the reader into your thesis~\cite{dinesh20oakland}. Use the first paragraph to discuss the setting.
+The notorious \emph{Stuxnet} attack~\cite{LangnerStuxnet},~\cite{SymantecStuxnet} the first \emph{Advanced-Persistent Threat} (APT) that subverted an \emph{Industrial and Control System} (ICS), spurred cybersecurity research on this domain. Since then, we observe increasing threats in the ICS domain as show the recent and major attacks, e.g., \emph{Colonial Pipeline}, \emph{CaddyWiper}, \emph{Industroyer2} etc. Moreover, the energy sector is a \emph{Critical Infrastructure} (CI) sector which makes it a target of particular interest~\cite{cisaCI}. Indeed, the \emph{Kaspersky Lab} lists, as a half-year report, the most noticeable attacks in ICS and claims that in the energy sector in 2022 about 34.5\% of the ICS computers (in \emph{Kaspersky Security Network}) have blocked malicious objects~\cite{KasperskyReport}. However, cybersecurity in the energy sector still needs to be developed — in April 2022, the joint cybersecurity advisory ``urge[d] critical infrastructure organizations, especially energy sector organizations, to implement detection and mitigation mechanisms and harden their ICS/SCADA devices`` — DOE, CISA, NSA, and FBI ~\cite{CSA22}. In this context of enhancing cybersecurity in ICS, this work, as part of a Master's Project in industry at \emph{Electricité de France} (EDF), builds a demonstrator attack called \emph{NinjaCrane} on a part of an ICS representative of what can be found in a Nuclear Power Plant (NPP) station. \emph{NinjaCrane} is a practical ICS cyberattack which raises awareness on the importance to respect the cybersecurity policies. The targeted ICS is a polar crane's control system, where the polar crane is a standalone equipment introducing and handling components within the reactor containment building. 
+
+% In the second paragraph you can introduce the main challenge that you see.
+
+Compared to the \emph{Information Technology} (IT) cybersecurity~\cite{nistIT}, the \emph{Operational Technology} (OT) cybersecurity is relatively new~\cite{nistOT}. OT cybersecurity is a change of paradigm where priority is given to availability followed by integrity to achieve one goal — safety. The following typical characteristics and challenges can be noted in an OT environment; low powered hardware with small cybersecurity capabilities and low cybersecurity monitoring, presence of custom closed-source solutions due to the importance of patents in the industry, safety comes before cybersecurity, complexity to update the system as it can stop the industrial process and as any modification needs to be qualified, presence of 3rd-party solutions, and finally still a relatively low awareness on the cybersecurity policy despite the fact that the human is generally a key asset directly interacting with the ICS.
+
+% The third paragraph lists why related work is insufficient.
+To cite similar works that have been done to illustrate an industrial cyberattack, the \emph{Graphical Realism Framework for Industrial Control Simulations} (GRFICS) models a destructive attack on the simplified \emph{Tennessee Eastman Challenge Process}~\cite{GRFICS18}. This attack is based on \emph{ARP poisoning} and a MITM attack in a simplified network architecture that can be found in~\autoref{fig:GRFICSv2_arch}. \emph{C. Ekisa} et al. built upon this GRFICS to make a \emph{Virtualised ICS Open-source Research Testbed}~\cite{Ekisa22} that emulates more closely an ICS and offers the possibility to practice several defense \& attack techniques. Even though the virtualization approach offers a better flexibility it suffers from a lack of representativeness. As a consequence, virtualization reduces the possibility to model advanced threat and generally shows exploitation of only one vulnerability. As an example, virtualized environment can not model physical attack and always assumes that the attacker already infected the air-gap network. Moreover, the target audience of the demonstrator attack are operators and automation technicians, the ones that interact with the ICS. They may not be familiar with computer virtualization and may not see how containers interact with each other, how realist is the considered architecture, and how it shows a practical cyberattack on the ICS they handle on a daily basis. To overcome those limitations, demonstrator attack examples on real world testbeds of a physical process have been made like the \emph{Check Point} chemical plant ICS testbed~\cite{checkpoint2023}, the \emph{OPSWAT} electric station ICS~\cite{opswat22}, or the \emph{Bristol Cyber Security Group} testbed~\cite{Gardiner19}~\cite{Craggs19}~\cite{Rashid20}. In the first two attack scenarios the adversary is however assumed to be already inside the production network which is a strong assumption. In both case, the adversary's goal is to make the industrial process stops. While in the Bristol testbed, the APT attack on the ICS starts from a maliciously modified manual PDF stored on the data aggregation server — the adversary is thus assumed to be in the SCADA — and the adversary's goal is to make the water industrial process enters into an unsafe state. In opposite, in this MSc thesis the adversary is assumed to be external (i.e., the production network and the control system are clean). The \emph{NinjaCrane} attack targets a clean air-gap ICS containing a \emph{Modicon M580} PLC controlling an industrial NPP-related demo environment made in LEGO\texttrademark. The end goal of the \emph{NinjaCrane} attack is to postpone the nuclear unit start by making it enter into a potentially unsafe state. 
+
+% The fourth and fifth paragraphs discuss your approach and why it is needed.
+
+This MSc project is building upon an already made sketch of a polar crane in LEGO\texttrademark\ and its ICS architecture. This demo environment has originally been developed by EDF as part of an internal training program on automation and qualification. It has been designed by \emph{B. Allard} according to the V model development cycle made by \emph{T. Cassas}. The MSc project's goal is to design a demonstrator cyberattack on this sketch to increase awareness on the cybersecurity policy. The polar crane is an easy to grasp and visual physical process which makes it more interesting to tamper for a demonstrator. Moreover, having a physical sketch enable to create a full cyberattack with several stages; from intrusion into the air-gap to physical process full control. The core idea is to show that an attacker would exploit several weak links to end up having a full control over the physical process. The approach taken was to exploit already known vulnerabilities like the HID spoofing or the \emph{ModiPwn} vulnerability which allow to take the control over the engineering workstation or the PLC respectively.
+
+Specifically in the industry, the cybersecurity policies are more often by-passed by the operators and are less monitored for several reasons — cybersecurity policy may reduce ease-of-use and are generally IT-oriented, lack of cybersecurity awareness, consequences or success probability of an OT cyberattack are minimized, some OT materials are not secured by design and do not integrate by default defense mechanisms and monitoring and OT materials are often part of an air-gap. In overall, operators may be under-trained regarding OT cybersecurity and may minimize their role even though they are a key but weak asset~\cite{Rahman21}. For all those reasons, a pedagogical and real-world demonstrator attack is well suiting a cybersecurity awareness training.  
+
+
+% The sixth paragraph will introduce your thesis statement. Think how you can distill the essence of your thesis into a single sentence.
+
+This MSc project develops a hands-on demonstrator cyberattack on the polar crane's ICS to make the polar crane stop with a loaded charge above of the nuclear reactor vessel. To do so, an infected USB cable is plugged-into an engineering workstation to perform an HID spoofing attack and setup a MITM attack over the connection with the PLC. This attack, exploiting the lack of authentication of the communication protocol, allows the attacker to take control over this \emph{Modbus}/\emph{UMAS} connection and allows arbitrary read and write on the PLC's system bits. By taking control of the PLC, an attacker can take the control of the polar crane when the PLC is connected to the engineering workstation. 
+
+% The seventh paragraph will highlight some of your results
+
+By presenting an attack demonstrator via an infected USB charging cable, this work highlights the importance of supervising and regulating the supply chain cybersecurity and the possible severe consequences of a lack of USB hygiene. Finally, targeting a specific physical process (e.g. a handling equipment) points out that an advanced OT cyberattack requires in-depth understanding of the physical process in order to make it enter into an unsafe state. Even if the polar crane is not directly interacting with the nuclear fuel, it is still a valuable target for the attackers as its compromise could lead to severe economical loss.
+
+% The eights paragraph discusses your core contribution.
+The demonstrator attack developed in this thesis is the first ICS demonstrator attack in the literature that targets a non-simulated specific system presents in a NPP. One novelty of this cyberattack also lies in its capacity to target an air-gap and to shape from an USB and IT-based attack to an OT attack on a PLC. Furthermore, the \emph{NinjaCrane} attack by exploiting maliciously tampered mouse or USB cable with wireless capacity illustrates how diverse, stealth and flexible an USB-based attack can be. Finally, in this demonstrator, even if it simplifies a lot the process and its architecture, the cyberattack has been made to be as close to reality as possible by making the fewest possible assumptions. 
+
+
+\iffalse
+
+STPA-SafeSec: Safety and security analysis for cyber-physical systems \cite{FRIEDBERG2017183}
+
+https://ieeexplore.ieee.org/document/10032670
+
+https://hitcon.org/2021/agenda/b128a44d-c492-410f-b04c-045548ce0590/Debacle%20of%20The%20Maginot%20Line%EF%BC%9AGoing%20Deeper%20into%20Schneider%20Modicon%20PAC%20Security.pdf
+
+https://conference.hitb.org/hitbsecconf2021sin/materials/D1T2%20-%20Going%20Deeper%20into%20Schneider%20Modicon%20PAC%20Security%20-%20Gao%20Jian.pdf
+
+https://dl.acm.org/doi/abs/10.1007/978-3-031-09234-3_18
+
+https://conferences.iaea.org/event/181/contributions/15925/attachments/8547/11382/IAEA-CN-278-619_SUCHORAB_et_al.pdf
+
+https://github.com/theralfbrown/smod-1
+
+https://www.artemiosv.info/hosted/ModbusFuzzer.pdf
+
+https://www.researchgate.net/profile/Mehdi-Sabraoui/publication/290732323_MODBUS_protocol_fuzzing_for_cyber-security_evaluation_of_industrial_control_systems/links/5d03a22ca6fdcc39f11806ff/MODBUS-protocol-fuzzing-for-cyber-security-evaluation-of-industrial-control-systems.pdf?origin=publication_detail
+
+https://github.com/M3m3M4n/modbus-fuzz-note
+
+\fi

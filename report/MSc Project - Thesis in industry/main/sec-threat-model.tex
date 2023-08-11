@@ -1,0 +1,34 @@
+%%%%%%%%%%%%%%%%
+\chapter{Threat Model}
+%%%%%%%%%%%%%%%%
+\label{chapter:threat-model}
+
+This chapter introduces the considered threat model for the \emph{NinjaCrane} attack. This includes a description of the adversary model and its attack surface. 
+
+\section{Adversary Model}
+
+The system under attack is the polar crane's ICS. The choice made by the adversary is justified as follow. Control and regulation functions in normal operation are generally made redundant with independent and diversified systems, and some components are non-electrical analog devices making it hard to compromise. However, during NPP shutdown less securely-proofed systems are used like the polar crane and can be seen as a weaker link. 
+
+The adversary type considered is an external adversary with medium capabilities such as hacktivists, hacking collectives or non-state cyber-terrorists. As such, adversary is considered to have no physical access to the NPP station, and would require unintentional insider threat to enter in the air-gap polar crane's ICS. Moreover, considered attacker is not highly skilled and would not exploit any 0-day vulnerability. However, the considered adversary has medium resources and has the capacity to chain known vulnerabilities and has an access to a M580 PLC, publicly accessible in the market, to reverse engineer it and test the cyberattack. As an hypothesis, some leaked information regarding the polar crane's ICS is assumed e.g., the supply chain leaked material references, unintentional data leak on social media from employee helped to identify automation operators interacting with the polar crane etc.
+
+The campaign objective is industrial sabotage by system tampering up to destruction. More precisely, the adversary's goal is to slow down or to keep the energy production of the NPP stopped in order to inflict economical loss or corporate shaming. As a recall, a reactor unit with a 900 MW capability generates around 3 M dollars per day. The cyberattack is performed during the periodic nuclear unit shutdowns and when the polar crane equipment is being used. Tampering or stopping the normal operations of the polar crane will delay the resumption of the energy production.
+
+The campaign vehicle is an USB physical media such as a maliciously tampered USB cable or a maliciously tampered mouse. The infected USB physical media is brought to the NPP station via spear-phishing or supply chain compromise e.g., sending an USB Ninja cable or a malicious mouse to the automation operator as a fake gift from a subcontractor or a colleague.
+
+The campaign weapons are HID spoofing and Modbus/UMAS exploit. The payload delivery is a keystrokes injection and a pre-compiled executable file. 
+
+The payload capabilities are keystrokes injection on the engineering workstation, data exfiltration of the information products, lateral movement from engineering workstation to PLC, Command and control by triggering on time the attack on the PLC and finally Denial-of-Service (DoS) of the PLC and polar crane to stop the use of both. 
+
+\section{Attack Surface}
+
+This section describes the attack surface of the polar cane's ICS architecture. \autoref{fig:data_flow_diagram} represents a Data Flow Diagram of an ICS by listing the common assets, security controls and threat actors. 
+
+All components of the ICS have a physical access control, i.e., safety gantry, key system etc. Three scenarios for the external intrusion could be consider:
+
+\begin{itemize}
+    \item Intrusion via the \emph{Information System} (IS), e.g., an employee plugs his own infected laptop to the corporate network.
+    \item Intrusion via the \emph{Supervision Network} (SCADA), e.g., an operator on site plugs a found USB-capable device on the log servers or on an engineering workstation.
+    \item Intrusion via the \emph{Production Network}, e.g., an adversary maliciously tampers an electronic actuator before it is delivered on site. 
+\end{itemize}
+
+By assuming that the supply chain of the polar crane is trusted, only the first two intrusions remain as the ICS is thus considered as clean after setup. The second scenario is the one kept in the following chapters for practicality, i.e., network architecture connecting the ICS and the IS is complex and is generally considered as an unidirectional network from ICS to IS.

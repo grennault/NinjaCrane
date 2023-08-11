@@ -1,0 +1,40 @@
+
+The "encryption" (as called by Schneider Electric) algorithm used to send Program Unit, Section and Subroutine Protection password is a custom-made hash algorithm. It has been reversed by Nicholas Miles~\cite{modipwn} and a simplified version of it is described in~\Cref{algo:pwd-hash}. This simplified version assumes that the password is only made of Basic Latin character (e.g., first Unicode Block).
+
+For $x \in \mathbb{N}$, let $f$ be defined as:
+
+\begin{multline}
+    \label{equ:define-f}
+    f:x\mapsto (x \bmod{2})((x \bmod{16} + 72)) + \\ (x + 1 \bmod{2})((x\bmod{16}\bmod{11}\bmod{2})(x\bmod{16}+48) + \\ (x\bmod{16}\bmod{11} + 1 \bmod{2})(x\bmod{16} + 55))
+\end{multline}
+
+\begin{algorithm}[H]
+\caption{Password hash}
+\label{algo:pwd-hash}
+\hspace*{0pt} \textbf{Assumption:} The plaintext password is encoded in utf-8 and is only made of Basic Latin characters \\
+\hspace*{0pt} \textbf{Input:} $p = p_0,....,p_{\textrm{len}(p)-1}$ (plaintext password), where $p_i$ is a utf-8 character (i.e, a hex number) for $i \in \{0, ..., \textrm{len}(p)-1\}$\\ 
+\hspace*{0pt} \textbf{Output:} $e = e_0,....,e_{\textrm{len}(p)-1}$ (password hash of same length as password) \\ 
+$e_{-1} \gets 0$ \\
+$S \gets \sum_{i=0}^{\textrm{len}(p)-1}p_i$ \\
+\For{$i\gets$ $0$ $\KwTo$ $\textrm{len}(p)-1$}{
+    $e_i \gets f(e_{i-1}*i + S + p_i*(i+1))$ where $f$ was defined previously in~\autoref{equ:define-f}
+}
+$e \gets e_0, ..., e_{\textrm{len}(p)-1}$ \\
+\Return $e$
+\end{algorithm}
+
+The work of M. Miles has been extended to break the hash algorithm. To find back a pre-image of $e$ we need to solve the following equations system for $S, p_1, p_2, ..., p_{\textrm{len}(p)-1}$,
+
+\begin{equation}
+    \begin{cases}
+      e_0 = f(S)\\
+      e_1 = f(p_0 + p_1 + S)\\
+      e_2 = f(2*(p_1 + p_2) + S)\\
+      ... \\
+      e_i = f(i*(p_{i-1} + p_i) + S)\\
+      ... \\
+      e_{\textrm{len}(p)-1}= f((\textrm{len}(p)-1)*(p_{\textrm{len}(p)-1-1}+ p_{\textrm{len}(p)}) + S)\\
+    \end{cases}\,.
+\end{equation}
+
+And then using the definition of $S$ we obtain $p_0 = S - \sum_{i=1}^{\textrm{len}(p)-1}p_i$. The code can be found in the \emph{NinjaCrane github}~\cite{MyGithub}. 

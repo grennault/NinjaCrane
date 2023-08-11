@@ -1,0 +1,6 @@
+Adafruit CircuitPython 8.2.0 on 2023-07-05; Adafruit Trinket M0 with samd21e18
+Board ID:trinket_m0
+UID:95C60354364A305020312E43350507FF
+boot.py output:
+--- Log sent from boot.py to boout_out.txt ---
+RX & TX touched. Keeping ON USB devices

@@ -6,9 +6,9 @@ This folder contains all the attacks of my project.
 
 ### Folders
 
-- `BLE_attack`: Attack related to the bluetooth
+- `BLE_attack`: Attacks related to the bluetooth
 
-- `Modbus_packet_attack`: Attack related to Modbus protocol
+- `Modbus_packet_attack`: Attacks related to the Modbus/UMAS communication protocol
 
 - `powershell_script`: Powershell scripts (Ex: bluetooth activation, wait for internet connection and download a file from internet).
 

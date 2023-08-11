@@ -1,0 +1,64 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Main thesis file
+% Goal: provide structure for my MSc thesis
+% Authors: Mathias Payer <mathias.payer@epfl.ch>, Gaiëtan Renault <gaietan.renault@alumni.epfl.ch>
+%
+% This work may be distributed and/or modified under the
+% conditions of the LaTeX Project Public License, either version 1.3
+% of this license or (at your option) any later version.
+% The latest version of this license is in
+%   http://www.latex-project.org/lppl.txt
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass[a4paper,11pt,oneside]{report}
+
+\usepackage[MScThesis,lablogo]{packages/EPFLreport} % Options: MScThesis, BScThesis, MScProject, BScProject, % NOTE: Modified by G. Renault
+\usepackage{xspace}
+\usepackage{indentfirst} % Added by G. Renault
+\usepackage{float} % Added by G. Renault
+\usepackage{svg}   % Added by G. Renault
+\usepackage[ruled,vlined, linesnumbered]{algorithm2e} % Added by G. Renault
+\usepackage{amsfonts} % Added by G. Renault
+\raggedbottom % Added by G. Renault
+\setlength {\marginparwidth }{2cm}
+\usepackage[disable]{todonotes} %disables all todonotes
+\newcommand{\ali}[1]{\todo[inline,color=red!40]{alice: #1}} % inline comment block
+\usepackage{cleveref} % Added by G. Renault
+
+\title{NinjaCrane: a Cybersecurity Attack Demonstrator on a Polar Crane's Industrial Control System (ICS)}
+\author{Gaiëtan Renault}
+\supervisor{Nicolas Sursin}
+\adviser{Prof. Dr. sc. ETH Mathias Payer}
+%\coadviser{Second Adviser} % TODO
+\expert{Nicolas Sursin} % TODOs
+
+\begin{document}
+\maketitle
+\makededication
+\makeacks
+
+
+\input{}
+
+\input{main/sec-abstract}
+\input{main/sec-notation}
+\maketoc
+\input{main/sec-introduction}
+\input{main/sec-background}
+\input{main/sec-threat-model}
+\input{main/sec-testbed-overview}
+\input{main/sec-design}
+\input{main/sec-ninja-crane-atk}
+\input{main/sec-evaluation}
+\input{main/sec-related-work}
+\input{main/sec-conclusion}
+
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{chapter}{Bibliography}
+\printbibliography
+
+% Appendices are optional
+\input{tail/appendix}
+
+\end{document}

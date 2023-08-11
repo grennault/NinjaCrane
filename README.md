@@ -18,7 +18,7 @@
 >
 > [<img src="img/epfl.png" height="80">](https://www.epfl.ch) [<img src="img/hexhive.png" height="80">](https://hexhive.epfl.ch/#)
 >
-> The internship is supervised in company by N. Sursin from [Electricité de France (EDF)](https://www.edf.fr/en) - Direction Projet Nouveau Nucléaire (DIPNN) - Direction Technique (DT).
+> The internship is supervised in company by N. Sursin from [Electricité de France (EDF)](https://www.edf.fr/en) - Direction Projet Nouveau Nucléaire (DIPNN) - Direction Technique (DT) - Département Composants Electriques et Electromécaniques (CEE) - Groupe Contrôle-Commande (CC).
 >
 > [<img src="img/edf.png" height="90">](https://www.edf.fr/)
 
@@ -38,7 +38,7 @@
 
 ## Abstract
 
-> Despite the sophisticated _Stuxnet_ attack discovered in 2010, the cybersecurity awareness around the _Industrial and Control System_ (ICS) is still low. The necessity to train ICS actors and raise awareness on this issue increases. Moreover, listing the best practices to follow regarding a security policy has a limited impact on their effectiveness compared to an awareness program. In this context, this Master’s Project builds a cyberattack demonstrator targeting a part of a nuclear power-plant ICS and more precisely the polar crane's Control System. The described attack, called _NinjaCrane_, infects an engineering workstation through an USB cable or a maliciously modified mouse and deploys a malware targeting the communication with a _Modicon M580_, a _Programmable Logic Controller_ (PLC), by conducting a _Meet-In-The-Middle Attack_ (MITM) exploiting the CVE-2021-22779 vulnerability (a.k.a. _ModiPwn_). This work illustrates and highlights the necessity to respect the ICS security policy and may well suit an awareness program.
+> Despite the sophisticated _Stuxnet_ attack discovered in 2010, the cybersecurity awareness around the _Industrial and Control System_ (ICS) remains a challenge. The necessity to train ICS actors and raise awareness on this issue increases. Moreover, listing the best practices to follow regarding a security policy has a limited impact on their effectiveness compared to an awareness program. In this context, this Master’s Project builds a cyberattack demonstrator targeting a part of a nuclear power-plant ICS and more precisely the polar crane's _Control System_. The described attack, called _NinjaCrane_, infects an engineering workstation through an USB cable or a maliciously modified mouse and deploys a malware targeting the communication with a _Modicon M580_, a _Programmable Logic Controller_ (PLC), by conducting a _Meet-In-The-Middle Attack_ (MITM) exploiting the CVE-2021-22779 vulnerability (a.k.a. _ModiPwn_). This work illustrates and highlights the necessity to respect the ICS security policy and may well suit an awareness program.
 
 <!-- REPOSITORY STRUCTURE -->
 
@@ -60,9 +60,17 @@
 
 ## How to start ?
 
-> - Read my MSc report at `\report\report.pdf`.
-> - Explore the `\Attacks` folder containing the attack vectors like the USB Ninja pro cable, the USB Ninja cable and the _NinjaCrane_ Meet-In-The-Middle malware targetting the connection between a Modicon M580 PLC and an engineering workstation.
-> - Explore the `\gui` folder containing a ~~beautiful~~ pythonic GUI controlling the USB Ninja cable or the USB Ninja pro. cable. This GUI allows to triggers the cables and deploy & controls the _NinjaCrane_ malware.
+> - Read my MSc report at [`\report\report.pdf`](https://github.com/grennault/NinjaCrane/tree/main/report/report.pdf).
+> - Explore the [`\Attacks`](https://github.com/grennault/NinjaCrane/tree/main/Attacks) folder containing the attack vectors like the USB Ninja pro cable, the USB Ninja cable, the maliciously tampered mouse and the _NinjaCrane_ Meet-In-The-Middle malware targetting the connection between a Modicon M580 PLC and an engineering workstation.
+> - Explore the [`\gui`](https://github.com/grennault/NinjaCrane/tree/main/gui) folder containing a ~~beautiful~~ pythonic GUI controlling the USB Ninja cable or the USB Ninja pro. cable. This GUI allows to trigger the cables and deploy & control the _NinjaCrane_ malware.
+
+<!-- DEMONSTRATION -->
+
+## Demo
+
+> - Watch the [`\report\demo.mp4`](https://github.com/grennault/NinjaCrane/tree/main/report/demo.mp4) video.
+
+![Demo video of the attack](/report/demo.mp4)
 
 <!-- USE & DISTRIBUTION -->
 
