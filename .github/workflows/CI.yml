@@ -29,7 +29,9 @@ jobs:
 
       - name: compile gui and push
         run: |
-          pyinstaller --clean --noconfirm --onefile --console -n HiJack --specpath gui --add-data "gui/img;img/"  "gui/HiJack.py"
+          pyinstaller --clean --noconfirm --onefile --console --add-data "gui/img;img/"  "gui/HiJack.py"
+          Move-Item dist\HiJack.exe gui\ -Force
+          Remove-Item -Path dist -Recurse
           git config --global user.name "NinjaBot"
           git config --global user.email "NinjaBot-actions@users.noreply.github.com"
           git add --all
