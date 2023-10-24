@@ -19,7 +19,7 @@
 import PySimpleGUI as sg
 import os
 import numpy as np
-from PIL import Image, ImageColor, ImageDraw
+from PIL import Image, ImageColor, ImageDraw, ImageTk
 from matplotlib.image import imread
 from io import BytesIO
 import base64
@@ -46,7 +46,7 @@ password = password_pro_DEFAULT  # NOTE: USB Ninja cable pro by default
 console_msg = ""  # Console message to print
 laser_pointer_cursor = False  # Cursor pointer
 # USB Ninja cable ("USB Ninja cable") or USB Ninja cable pro. ("USB Ninja cable pro.")
-cable_DEFAULT = "USB Ninja cable pro."  # NOTE: USB Ninja cable pro by default
+cable_DEFAULT = "USB Ninja cable"  # NOTE: USB Ninja cable pro by default
 
 
 def open_window(

@@ -1,0 +1,2 @@
+pydivert==2.1.0
+pyuac==0.0.3
