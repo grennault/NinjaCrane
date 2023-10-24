@@ -26,6 +26,8 @@ jobs:
           }
           pip install pyinstaller
           pip install auto-py-to-exe
+          pip install pyuac
+          pip install pydivert
 
       - name: compile gui and push
         run: |
