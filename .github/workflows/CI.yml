@@ -46,6 +46,7 @@ jobs:
         run: |
           pyinstaller --clean --noconfirm --onefile --windowed --icon "Attacks/Modbus_packet_attack/ConvertToExe/malware_icon.ico"  "Attacks/Modbus_packet_attack/ConvertToExe/malware.pyw"
           Move-Item dist\malware.exe Attacks\Modbus_packet_attack\ConvertToExe -Force
+          Remove-Item -Path Attacks/Modbus_packet_attack/ConvertToExe/malwar3.exe 
           Rename-Item -Force -Path "Attacks/Modbus_packet_attack/ConvertToExe/malware.exe" -NewName "malwar3.exe"
           Remove-Item -Path dist -Recurse
           git config --global user.name "NinjaBot"
