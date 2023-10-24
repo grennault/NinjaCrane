@@ -17,11 +17,15 @@ jobs:
         
       - name: setup compilation env
         run: >
-          python -m pip install --upgrade pip ;
-          if [ -f gui/requirements.txt ]; then pip install -r gui/requirements.txt ; fi ;
-          if [ -f Attacks/Modbus_packet_attack/ConvertToExe/requirements.txt ]; then pip install -r Attacks/Modbus_packet_attack/ConvertToExe/requirements.txt ; fi ;
-          pip install pyinstaller ;
-          pip install auto-py-to-exe ;
+          python -m pip install --upgrade pip
+          IF EXIST gui/requirements.txt (
+              pip install -r gui/requirements.txt
+          )
+          IF EXIST Attacks/Modbus_packet_attack/ConvertToExe/requirements.txt (
+              pip install -r Attacks/Modbus_packet_attack/ConvertToExe/requirements.txt
+          )
+          pip install pyinstaller
+          pip install auto-py-to-exe
 
       - name: compile gui
         run: >
