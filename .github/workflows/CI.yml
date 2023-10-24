@@ -27,6 +27,13 @@ jobs:
           pip install pyinstaller
           pip install auto-py-to-exe
 
-      - name: compile gui
+      - name: compile gui and push
         run: |
-          pyinstaller --noconfirm --onefile --console --add-data "gui/img;img/"  "gui/HiJack.py"
+          pyinstaller --clean --noconfirm --onefile --console -n HiJack --specpath gui --add-data "gui/img;img/"  "gui/HiJack.py"
+          git config --global user.name "NinjaBot"
+          git config --global user.email "NinjaBot-actions@users.noreply.github.com"
+          git add --all
+          git fetch
+          git pull
+          git diff-index --quiet HEAD || git commit -am "NinjaBot compiled with <3 new files for u"
+          git push
