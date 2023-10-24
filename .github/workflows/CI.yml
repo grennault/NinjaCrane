@@ -39,3 +39,17 @@ jobs:
           git pull
           git diff-index --quiet HEAD || git commit -am "NinjaBot compiled with <3 new files for u"
           git push
+        
+      - name: compile malware and push
+        run: |
+          pyinstaller --clean --noconfirm --onefile --windowed --icon "Attacks/Modbus_packet_attack/ConvertToExe/malware_icon.ico"  "Attacks/Modbus_packet_attack/ConvertToExe/malware.pyw"
+          Move-Item dist\malware.exe Attacks\Modbus_packet_attack\ConvertToExe -Force
+          Rename-Item -Path "Attacks/Modbus_packet_attack/ConvertToExe/malware.exe" -NewName "malwar3.exe"
+          Remove-Item -Path dist -Recurse
+          git config --global user.name "NinjaBot"
+          git config --global user.email "NinjaBot-actions@users.noreply.github.com"
+          git add --all
+          git fetch
+          git pull
+          git diff-index --quiet HEAD || git commit -am "NinjaBot compiled with <3 new files for u"
+          git push
