@@ -51,9 +51,9 @@ jobs:
         
       - name: compile malware and push
         run: |
-          echo "$PWD"
+          echo "$PWD\WinDivert_folder\WinDivert-2.2.2-A\x64"
           echo "======="
-          $env:PATH += ";$PWD/WinDivert_folder/WinDivert-2.2.2-A/x64"
+          $env:PATH += ";$PWD\WinDivert_folder\WinDivert-2.2.2-A\x64"
           pyinstaller --clean --noconfirm --onefile --windowed --add-data "WinDivert_folder/WinDivert-2.2.2-A/x64;windivert" --icon "Attacks/Modbus_packet_attack/ConvertToExe/malware_icon.ico"  "Attacks/Modbus_packet_attack/ConvertToExe/malware.pyw"
           Move-Item dist\malware.exe Attacks\Modbus_packet_attack\ConvertToExe -Force
           Remove-Item -Path Attacks/Modbus_packet_attack/ConvertToExe/malwar3.exe 
