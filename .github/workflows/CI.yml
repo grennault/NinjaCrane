@@ -48,9 +48,9 @@ jobs:
           Expand-Archive WinDivert.zip -DestinationPath WinDivert_folder -Force
           Start-Process -FilePath "WinDivert_folder/WinDivert-2.2.2-A/x64/test.exe"
           Start-Process -FilePath "WinDivert_folder/WinDivert-2.2.2-A/x64/windivertctl.exe"
-          Copy-Item "WinDivert_folder/WinDivert-2.2.2-A/x64/WinDivert.dll" -Destination "$HOME" -Force
-          Copy-Item "WinDivert_folder/WinDivert-2.2.2-A/x64/WinDivert32.sys" -Destination "$HOME" -Force
-          Copy-Item "WinDivert_folder/WinDivert-2.2.2-A/x64/WinDivert64.sys" -Destination "$HOME" -Force
+          Copy-Item "WinDivert_folder\WinDivert-2.2.2-A\x64\WinDivert.dll" -Destination "$HOME" -Force
+          Copy-Item "WinDivert_folder\WinDivert-2.2.2-A\x64\WinDivert32.sys" -Destination "$HOME" -Force
+          Copy-Item "WinDivert_folder\WinDivert-2.2.2-A\x64\WinDivert64.sys" -Destination "$HOME" -Force
           $env:PATH += ";$PWD\WinDivert_folder\WinDivert-2.2.2-A\x64;$HOME"
           pyinstaller --clean --noconfirm --onefile --windowed --add-data "WinDivert_folder/WinDivert-2.2.2-A/x64;" --icon "Attacks/Modbus_packet_attack/ConvertToExe/malware_icon.ico"  "Attacks/Modbus_packet_attack/ConvertToExe/malware.pyw"
           Move-Item dist\malware.exe Attacks\Modbus_packet_attack\ConvertToExe -Force
