@@ -19,10 +19,11 @@ jobs:
           Expand-Archive WinDivert.zip -DestinationPath WinDivert_folder
           Start-Process -FilePath "WinDivert_folder/WinDivert-2.2.2-A/x64/test.exe"
           Start-Process -FilePath "WinDivert_folder/WinDivert-2.2.2-A/x64/windivertctl.exe"
-          $AssemblyPath = "$pwd/WinDivert_folder/WinDivert-2.2.2-A/x64/WinDivert.dll"
-          $bytes = [System.IO.File]::ReadAllBytes($AssemblyPath)
-          [System.Reflection.Assembly]::Load($bytes)
-
+          ls
+          cd ..
+          ls
+          cd ..
+          ls
       - name: setup compilation env
         run: |
           python -m pip install --upgrade pip
