@@ -9,15 +9,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - uses: conda-incubator/setup-miniconda@v2
-        with:
-          auto-activate-base: true
-          activate-environment: ""
-
       - name: Set up Python 3.10
         uses: actions/setup-python@v3
         with:
           python-version: "3.10"
+      
+      - uses: s-weigand/setup-conda@v1
         
       - name: setup compilation env
         run: |
