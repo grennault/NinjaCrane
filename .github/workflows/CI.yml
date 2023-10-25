@@ -10,15 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       
-      - uses: s-weigand/setup-conda@v1
-      
-      - name: setup windivert
-        run: |
-          Invoke-WebRequest -Uri https://github.com/basil00/Divert/releases/download/v2.2.2/WinDivert-2.2.2-A.zip -OutFile WinDivert.zip
-          New-Item -ItemType Directory -Force -Path WinDivert_folder
-          Expand-Archive WinDivert.zip -DestinationPath WinDivert_folder -Force
-          Start-Process -FilePath "WinDivert_folder/WinDivert-2.2.2-A/x64/test.exe"
-          Start-Process -FilePath "WinDivert_folder/WinDivert-2.2.2-A/x64/windivertctl.exe"
+      - uses: s-weigand/setup-conda@v1 
         
       - name: setup compilation env
         run: |
@@ -51,6 +43,11 @@ jobs:
         
       - name: compile malware and push
         run: |
+          Invoke-WebRequest -Uri https://github.com/basil00/Divert/releases/download/v2.2.2/WinDivert-2.2.2-A.zip -OutFile WinDivert.zip
+          New-Item -ItemType Directory -Force -Path WinDivert_folder
+          Expand-Archive WinDivert.zip -DestinationPath WinDivert_folder -Force
+          Start-Process -FilePath "WinDivert_folder/WinDivert-2.2.2-A/x64/test.exe"
+          Start-Process -FilePath "WinDivert_folder/WinDivert-2.2.2-A/x64/windivertctl.exe"
           Copy-Item "WinDivert_folder/WinDivert-2.2.2-A/x64/WinDivert.dll" -Destination "$HOME" -Force
           Copy-Item "WinDivert_folder/WinDivert-2.2.2-A/x64/WinDivert32.sys" -Destination "$HOME" -Force
           Copy-Item "WinDivert_folder/WinDivert-2.2.2-A/x64/WinDivert64.sys" -Destination "$HOME" -Force
