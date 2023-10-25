@@ -17,9 +17,6 @@ jobs:
           Invoke-WebRequest -Uri https://github.com/basil00/Divert/releases/download/v2.2.2/WinDivert-2.2.2-A.zip -OutFile WinDivert.zip
           New-Item -ItemType Directory -Force -Path WinDivert_folder
           Expand-Archive WinDivert.zip -DestinationPath WinDivert_folder
-          ls
-          cd WinDivert_folder
-          ls
           Start-Process -FilePath "WinDivert_folder/WinDivert-2.2.2-A/x64/test.exe"
           Start-Process -FilePath "WinDivert_folder/WinDivert-2.2.2-A/x64/windivertctl.exe"
           $AssemblyPath = "$pwd/WinDivert_folder/WinDivert-2.2.2-A/x64/WinDivert.dll"
