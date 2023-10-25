@@ -9,10 +9,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Set up Python 3.10
-        uses: actions/setup-python@v3
-        with:
-          python-version: "3.10"
       
       - uses: s-weigand/setup-conda@v1
       
@@ -24,9 +20,9 @@ jobs:
           ls
           cd WinDivert_folder
           ls
-          Start-Process -FilePath "WinDivert-2.2.2-A/x64/test.exe"
-          Start-Process -FilePath "WinDivert-2.2.2-A/x64/windivertctl.exe"
-          $AssemblyPath = "WinDivert-2.2.2-A/x64/WinDivert.dll"
+          Start-Process -FilePath "WinDivert_folder/WinDivert-2.2.2-A/x64/test.exe"
+          Start-Process -FilePath "WinDivert_folder/WinDivert-2.2.2-A/x64/windivertctl.exe"
+          $AssemblyPath = "$pwd/WinDivert_folder/WinDivert-2.2.2-A/x64/WinDivert.dll"
           $bytes = [System.IO.File]::ReadAllBytes($AssemblyPath)
           [System.Reflection.Assembly]::Load($bytes)
 
